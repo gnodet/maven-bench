@@ -4,6 +4,9 @@
 results/
 maven-benchmark/
 
+# Downloaded Maven distributions
+maven-distributions/
+
 # Local configuration overrides
 scripts/benchmark-config.local.sh
 

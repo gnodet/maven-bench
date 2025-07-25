@@ -42,6 +42,15 @@ case "${ACTION}" in
     "check")
         echo "=== Maven Performance Benchmark - Environment Check ==="
         echo ""
+
+        # Check if Maven distributions are setup
+        if [[ ! -d "${SCRIPT_DIR}/../maven-distributions" ]]; then
+            echo "Maven distributions not found. Setting up..."
+            echo ""
+            "${SCRIPT_DIR}/setup-maven-distributions.sh"
+            echo ""
+        fi
+
         check_environment
         echo ""
         echo "To run benchmarks:"

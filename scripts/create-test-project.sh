@@ -253,14 +253,15 @@ EOF
 # Create .mvn directory with maven.config
 create_maven_config() {
     mkdir -p "${TEST_PROJECT_DIR}/.mvn"
-    
+
     # Create a simple maven.config that works with both Maven 3 and 4
+    # Note: Maven 3 doesn't support comments in maven.config
     cat > "${TEST_PROJECT_DIR}/.mvn/maven.config" << 'EOF'
 -Dmaven.artifact.threads=8
 -Dmaven.compile.fork=true
 EOF
 
-    log "Created .mvn/maven.config"
+    log "Created .mvn/maven.config (Maven 3 compatible)"
 }
 
 main() {

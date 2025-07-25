@@ -17,13 +17,27 @@ if [[ ${BASH_VERSION%%.*} -lt 4 ]]; then
     exit 1
 fi
 
-# Maven installations - update paths as needed
-export MAVEN3_PATH="/usr/bin/mvn"
-export MAVEN4_RC4_PATH="/opt/maven/bin/mvn"
-export MAVEN4_CURRENT_PATH="${PWD}/apache-maven/target/apache-maven-4.1.0-SNAPSHOT/bin/mvn"
+# Get script directory for relative paths
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "${SCRIPT_DIR}")"
 
-# Java installation
-export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+# Maven installations - using cached distributions
+export MAVEN3_PATH="${PROJECT_ROOT}/maven-distributions/maven-3.9.9/bin/mvn"
+export MAVEN4_RC4_PATH="${PROJECT_ROOT}/maven-distributions/maven-4.0.0-rc-4/bin/mvn"
+export MAVEN4_CURRENT_PATH="${PROJECT_ROOT}/maven-distributions/maven-4.0.0-rc-4/bin/mvn"  # Fallback to rc-4 if current not built
+
+# Java installation (try to detect automatically)
+if [[ -n "${JAVA_HOME}" ]]; then
+    export JAVA_HOME="${JAVA_HOME}"
+elif [[ -d "/usr/lib/jvm/java-21-openjdk-amd64" ]]; then
+    export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+elif [[ -d "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home" ]]; then
+    export JAVA_HOME="/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
+elif [[ -d "/usr/local/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home" ]]; then
+    export JAVA_HOME="/usr/local/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
+else
+    echo "Warning: JAVA_HOME not set and Java 21 not found in common locations"
+fi
 
 # Test project configuration
 export GENERATOR_REPO="https://github.com/maven-turbo-reactor/maven-multiproject-generator.git"
@@ -32,26 +46,26 @@ export GENERATOR_REPO="https://github.com/maven-turbo-reactor/maven-multiproject
 export BENCHMARK_TIMEOUT=600  # 10 minutes
 export MEMORY_MONITOR_INTERVAL=5  # seconds
 
-# Quick test configurations (subset for faster testing)
+# Quick test configurations
 declare -A QUICK_TEST_CONFIGS=(
-    ["maven4-current_512m"]="maven4-current 512 false"
-    ["maven4-current_512m_maven3personality"]="maven4-current 512 true"
-    ["maven4-current_1024m"]="maven4-current 1024 false"
+    ["maven4-rc4_512m"]="maven4-rc4 512 false"
+    ["maven4-rc4_512m_maven3personality"]="maven4-rc4 512 true"
+    ["maven4-rc4_1024m"]="maven4-rc4 1024 false"
 )
 
-# Full test configurations (all combinations)
+# Full test configurations
 declare -A FULL_TEST_CONFIGS=(
-    # Original Maven 3 baseline
+    # Maven 3 baseline
     ["maven3_1024m"]="maven3 1024 false"
     ["maven3_1536m"]="maven3 1536 false"
     
-    # Maven 4.0.0-rc-4 configurations
+    # Maven 4.0.0-rc-4
     ["maven4-rc4_512m"]="maven4-rc4 512 false"
     ["maven4-rc4_1024m"]="maven4-rc4 1024 false"
     ["maven4-rc4_1536m"]="maven4-rc4 1536 false"
     ["maven4-rc4_1536m_maven3personality"]="maven4-rc4 1536 true"
     
-    # Maven 4 with cache improvements (current build)
+    # Maven 4 current (fallback to rc-4 if not available)
     ["maven4-current_512m"]="maven4-current 512 false"
     ["maven4-current_512m_maven3personality"]="maven4-current 512 true"
     ["maven4-current_1024m"]="maven4-current 1024 false"
@@ -121,7 +135,7 @@ check_environment() {
     if [[ ${maven4_current_ok} -eq 1 ]]; then
         echo -e "${GREEN}✓${NC} Maven 4 current tests available"
     else
-        echo -e "${RED}✗${NC} Maven 4 current tests not available - build Maven first!"
+        echo -e "${RED}✗${NC} Maven 4 current tests not available - using rc-4 as fallback"
     fi
 }
 

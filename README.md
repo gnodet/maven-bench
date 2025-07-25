@@ -22,9 +22,11 @@ Maven Bench provides automated performance testing for different Maven configura
 
 - **Bash 4.0+** (macOS users: see [macOS Setup Guide](docs/MACOS-SETUP.md))
 - Java 21+
-- Maven 3.x and/or Maven 4.x installations
+- `curl` or `wget` (for downloading Maven distributions)
 - Linux/macOS environment (Windows support via WSL)
 - At least 2GB RAM for testing
+
+**Note**: Maven distributions are automatically downloaded and cached locally - no need to install Maven separately!
 
 ### Installation
 
@@ -43,6 +45,11 @@ chmod +x scripts/*.sh
 ```bash
 ./scripts/run-benchmark.sh --check
 ```
+
+This will automatically:
+- Download and cache Maven 3.9.9 and Maven 4.0.0-rc-4 distributions
+- Detect Java installation
+- Verify all prerequisites
 
 ### Quick Demo
 
