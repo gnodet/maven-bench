@@ -20,6 +20,7 @@ Maven Bench provides automated performance testing for different Maven configura
 
 ### Prerequisites
 
+- **Bash 4.0+** (macOS users: see [macOS Setup Guide](docs/MACOS-SETUP.md))
 - Java 21+
 - Maven 3.x and/or Maven 4.x installations
 - Linux/macOS environment (Windows support via WSL)
@@ -31,6 +32,10 @@ Maven Bench provides automated performance testing for different Maven configura
 git clone https://github.com/gnodet/maven-bench.git
 cd maven-bench
 chmod +x scripts/*.sh
+
+# macOS users: install Bash 4+ first
+# brew install bash
+# Then use: /opt/homebrew/bin/bash scripts/run-benchmark.sh
 ```
 
 ### Environment Check

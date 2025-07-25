@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Create a simpler test project for Maven benchmarking
 # This creates a more manageable project that will actually build successfully

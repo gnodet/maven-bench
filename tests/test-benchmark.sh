@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Basic functionality tests for Maven Bench
 # Run with: ./tests/test-benchmark.sh

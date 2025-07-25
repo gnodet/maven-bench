@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Demo script for Maven Performance Benchmark
 # Shows the performance improvements from PR #2506

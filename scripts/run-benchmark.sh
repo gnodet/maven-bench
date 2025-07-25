@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Maven Performance Benchmark Runner
 # Simple wrapper script for running benchmarks

@@ -1,7 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Maven Performance Benchmark Configuration
 # Customize these settings for your environment
+
+# Check Bash version (requires 4.0+ for associative arrays)
+if [[ ${BASH_VERSION%%.*} -lt 4 ]]; then
+    echo "Error: This script requires Bash 4.0 or later"
+    echo "Current version: $BASH_VERSION"
+    echo ""
+    echo "On macOS, install newer Bash with:"
+    echo "  brew install bash"
+    echo "  # Then use: /opt/homebrew/bin/bash or /usr/local/bin/bash"
+    echo ""
+    echo "Or run with explicit bash:"
+    echo "  bash scripts/run-benchmark.sh --check"
+    exit 1
+fi
 
 # Maven installations - update paths as needed
 export MAVEN3_PATH="/usr/bin/mvn"

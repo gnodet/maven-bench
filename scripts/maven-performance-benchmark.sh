@@ -1,8 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Maven Performance Benchmark Script
 # Tests various Maven configurations with different memory settings
 # Based on PR #2506 performance measurements
+
+# Check Bash version (requires 4.0+ for associative arrays)
+if [[ ${BASH_VERSION%%.*} -lt 4 ]]; then
+    echo "Error: This script requires Bash 4.0 or later"
+    echo "Current version: $BASH_VERSION"
+    echo ""
+    echo "On macOS, install newer Bash with:"
+    echo "  brew install bash"
+    echo "  # Then use: /opt/homebrew/bin/bash or /usr/local/bin/bash"
+    echo ""
+    echo "Or run with explicit bash:"
+    echo "  bash scripts/maven-performance-benchmark.sh"
+    exit 1
+fi
 
 set -e
 
